@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuandai.dao.MemberDAO">
+
+	<resultMap id="BaseResultMap" type="MemberPO">
+	    <id column="member_id"  property="memberId" />
+	    <result column="name"  property="name" />
+	    <result column="mobile" property="mobile" />
+	    <result column="SEX"  property="sex" />
+	    <result column="BIRTHDAY" property="birthday" />
+	    <result column="REMARK" property="remark" />
+	</resultMap>
+
+   <sql id="Base_Column_List">
+      member_id memberId, name, mobile, SEX, BIRTHDAY, REMARK
+   </sql>
+   
+   <sql id="queryCondition" >
+   
+     <if test=" param.name != null  and param.name != '' ">
+        and name = #{param.name}
+     </if>
+     
+     <if test="param.mobile != null  and param.mobile != '' ">
+        and mobile = #{param.mobile}
+     </if>
+     
+     <if test="param.sex !=null and param.sex != '' ">
+       and sex = #{param.sex}
+     </if>
+   </sql>
+   
+   <select id="queryById" parameterType="String" resultType="MemberPO">
+      SELECT 
+       <include refid="Base_Column_List"/>
+      FROM td_member
+      WHERE MEMBER_ID = #{id}
+   </select>
+   
+   
+   <insert id="save" parameterType="MemberPO" >
+      <selectKey resultType="String" keyProperty="memberId" order="BEFORE">
+         SELECT UUID() as  memberId
+      </selectKey>
+     	INSERT INTO td_member (
+     	   member_id,  name,  mobile,  SEX,  BIRTHDAY,  REMARK
+     	)VALUES(
+     	  #{memberId} , #{name}, #{mobile}, #{sex}, #{birthday}, #{remark}
+     	)
+   </insert>
+   
+   
+   <update id="update" parameterType="MemberPO">
+      UPDATE td_member 
+      <set>
+         <if test="name != null ">
+           name  =  #{name},
+         </if>
+         
+         <if test="mobile != null">
+          mobile = #{mobile},
+         </if>
+         
+         <if test="sex != null">
+           sex = #{sex},
+         </if>
+         
+         <if test="birthday != null ">
+           birthday = #{birthday},
+         </if>
+         
+         <if test="remark != null ">
+           remark = #{remark},
+         </if>
+      </set>
+      WHERE MEMBER_ID = #{memberId}
+   </update>
+   
+   <delete id="delete" parameterType="String" >
+      DELETE FROM td_member
+      WHERE MEMBER_ID = #{id}
+   </delete>
+   
+   <select id="queryListByParam"  resultMap="BaseResultMap">
+		SELECT 
+       		<include refid="Base_Column_List"/>
+     	FROM td_member
+      	WHERE 1=1
+      	 <include refid="queryCondition"/>
+   </select>
+      	
+
+</mapper>
