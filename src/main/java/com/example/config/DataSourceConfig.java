@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ import com.alibaba.druid.pool.DruidDataSourceFactory;
  *@Version:1.1.0  
  */
 @Configuration
+@MapperScan(basePackages="com.example.dao")
 public class DataSourceConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(DataSourceConfig.class);
@@ -47,7 +49,7 @@ public class DataSourceConfig {
     //主库写
     @Bean(name="writeDataSource")
     public DataSource writeDataSource () {
-        
+        logger.info("=============================> init  writeDataSource");
         try {
            Properties props = new Properties();
            
@@ -82,6 +84,8 @@ public class DataSourceConfig {
     @Bean(name="readDataSource")
     public DataSource readDataSource() {
         
+        logger.info("=============================> init  readDataSource");
+        
         try {
             Properties props = new Properties();
             
@@ -114,7 +118,7 @@ public class DataSourceConfig {
     }
     
     //主数据源
-    @Bean(name = "dynamicDataSource")
+    @Bean
     @Primary
     public AbstractRoutingDataSource dataSource (  @Qualifier("writeDataSource") DataSource write,  @Qualifier("readDataSource") DataSource read) {
         
