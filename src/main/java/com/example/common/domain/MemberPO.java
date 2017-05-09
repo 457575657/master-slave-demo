@@ -157,7 +157,7 @@ public class MemberPO implements Serializable {
         if ( ObjectUtils.isEmpty(this.birthday) ) {
             return null;
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(this.birthday);
         
     }
