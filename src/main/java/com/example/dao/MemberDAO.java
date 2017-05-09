@@ -15,8 +15,11 @@ import com.example.common.domain.MemberPO;
 import com.example.config.DataSource;
 
 
+/**
+ * Dev 1 remark
+ */
 
-/**  
+/**
  *<p> 会员DAO </p>
  *@Author:Yips
  *@Since:2017年1月5日 上午9:14:39 
